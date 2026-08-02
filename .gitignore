@@ -1,0 +1,4 @@
+.env.prod
+docker-compose.prod.yaml
+
+out
