@@ -40,7 +40,4 @@ migrate-create:
 		exit 1; \
 	fi; \
 	docker compose -f $(DOCKER_COMPOSE_FILE) run --rm todoapp-postgres-migrate \
-		create \
-		-ext sql \
-		-dir $(PROJECT_ROOT)/migrations \
-		-seq "$(seq)"
+		create -ext sql -dir ./migrations -seq $(seq)
