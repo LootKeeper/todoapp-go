@@ -28,10 +28,19 @@ env-cleanup:
 	@read -p "Are you want to delete volume? [y/N]: " ans; \
 	if [ "$$ans" = "y" ]; then \
 		docker compose -f $(DOCKER_COMPOSE_FILE) down todoapp-postgres && \
-		rm -rf ${PROJECT_ROOT}/out/pgdata && \
+		rm -rf $(PROJECT_ROOT)/out/pgdata && \
 		echo "Env files deleted"; \
 	else \
 		echo "Aborted"; \
 	fi
 
-	
+migrate-create:
+	@if [ -z "$(seq)" ]; then \
+		echo "Please pass 'seq' value. Example: make migrate-create seq=init"; \
+		exit 1; \
+	fi; \
+	docker compose -f $(DOCKER_COMPOSE_FILE) run --rm todoapp-postgres-migrate \
+		create \
+		-ext sql \
+		-dir $(PROJECT_ROOT)/migrations \
+		-seq "$(seq)"
